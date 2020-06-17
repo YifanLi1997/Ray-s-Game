@@ -34,7 +34,7 @@ public class KeyLock : MonoBehaviour
         if (m_count <= 0)
         {
             bubbleSpawner.gameObject.SetActive(true);
-            restartButton.SetActive(true);
+            //restartButton.SetActive(true);
         }
     }
 

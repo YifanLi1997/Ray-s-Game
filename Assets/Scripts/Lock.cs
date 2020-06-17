@@ -28,7 +28,7 @@ public class Lock : MonoBehaviour
             {
                 // success
                 AudioSource.PlayClipAtPoint(successSFX, Camera.main.transform.position);
-                Instantiate(successFlag, transform.position, Quaternion.identity);
+                successFlag.SetActive(true);
                 Destroy(collision.gameObject);
                 Destroy(gameObject);
             }
@@ -51,7 +51,7 @@ public class Lock : MonoBehaviour
             {
                 Collider2D touchedCollider = Physics2D.OverlapPoint(touchPos);
 
-                if (touchedCollider = m_col)
+                if (touchedCollider == m_col)
                 {
                     AudioSource.PlayClipAtPoint(hintSFX, Camera.main.transform.position, 0.1f);
 
