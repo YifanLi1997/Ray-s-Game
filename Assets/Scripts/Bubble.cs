@@ -5,7 +5,11 @@ using UnityEngine;
 public class Bubble : MonoBehaviour
 {
     Collider2D m_col;
-    Collider2D m_touchedCollier;
+
+    void Start()
+    {
+        m_col = GetComponent<Collider2D>();
+    }
 
     void Update()
     {
@@ -13,19 +17,14 @@ public class Bubble : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
             Vector2 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
-            Debug.Log(touchPos);
 
             if (touch.phase == TouchPhase.Began)
             {
-
-                m_touchedCollier = Physics2D.OverlapPoint(touchPos);
-            }
-
-            if (touch.phase == TouchPhase.Ended)
-            {
+                Collider2D m_touchedCollier = Physics2D.OverlapPoint(touchPos);
                 if (m_col == m_touchedCollier)
                 {
                     // Explosion
+                    Debug.Log(m_touchedCollier);
                     gameObject.SetActive(false);
                 }
             }
