@@ -6,6 +6,7 @@ public class Key : MonoBehaviour
 {
     bool m_moveAllowed = false;
     Collider2D m_col;
+    Vector2 m_originalpos;
 
     [SerializeField] AudioClip touchKey;
 
@@ -13,6 +14,7 @@ public class Key : MonoBehaviour
     void Start()
     {
         m_col = GetComponent<Collider2D>();
+        m_originalpos = transform.position;
     }
 
 
@@ -52,5 +54,11 @@ public class Key : MonoBehaviour
             }
         }
         
+    }
+
+
+    public Vector2 GetOriginalPos()
+    {
+        return m_originalpos;
     }
 }

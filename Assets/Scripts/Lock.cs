@@ -12,11 +12,13 @@ public class Lock : MonoBehaviour
 
     KeyLock m_keyLock;
     Collider2D m_col;
+    Key m_pairedKey;
 
     private void Start()
     {
         m_keyLock = FindObjectOfType<KeyLock>();
         m_col = GetComponent<Collider2D>();
+        m_pairedKey = m_keyLock.findPairedKey(this);
     }
    
 
@@ -27,15 +29,21 @@ public class Lock : MonoBehaviour
             if (m_keyLock.pairOrNot(collision.GetComponent<Key>(), gameObject.GetComponent<Lock>()))
             {
                 // success
-                AudioSource.PlayClipAtPoint(successSFX, Camera.main.transform.position);
+                AudioSource.PlayClipAtPoint(successSFX, Camera.main.transform.position, 0.25f);
                 successFlag.SetActive(true);
                 Destroy(collision.gameObject);
                 Destroy(gameObject);
             }
             else
             {
-                // TODO: failure
-                Debug.Log("not pair");
+                AudioSource.PlayClipAtPoint(failureSFX, Camera.main.transform.position, 0.25f);
+                Debug.Log(collision.gameObject.GetComponent<Key>().GetOriginalPos());
+                collision.gameObject.transform.position = collision.gameObject.GetComponent<Key>().GetOriginalPos();
+                //collision.gameObject.transform.position = Vector2.MoveTowards(
+                //    collision.gameObject.transform.position,
+                //    collision.gameObject.GetComponent<Key>().GetOriginalPos(),
+                //    1f);
+                m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", true);
             }
         }
     }
@@ -55,7 +63,7 @@ public class Lock : MonoBehaviour
                 {
                     AudioSource.PlayClipAtPoint(hintSFX, Camera.main.transform.position, 0.1f);
 
-                    // TODO: the related key shakes VFX
+                    // TODO: the related key hint VFX
 
                 }
             }
