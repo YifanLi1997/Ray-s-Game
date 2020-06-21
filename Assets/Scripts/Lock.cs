@@ -37,15 +37,16 @@ public class Lock : MonoBehaviour
             else
             {
                 AudioSource.PlayClipAtPoint(failureSFX, Camera.main.transform.position, 0.25f);
-                Debug.Log(collision.gameObject.GetComponent<Key>().GetOriginalPos());
                 collision.gameObject.transform.position = collision.gameObject.GetComponent<Key>().GetOriginalPos();
-                //collision.gameObject.transform.position = Vector2.MoveTowards(
-                //    collision.gameObject.transform.position,
-                //    collision.gameObject.GetComponent<Key>().GetOriginalPos(),
-                //    1f);
                 m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", true);
+                Invoke("ResetIsShining", 4.5f);
             }
         }
+    }
+
+    private void ResetIsShining()
+    {
+        m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", false);
     }
 
     private void Update()
