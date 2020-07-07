@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class Lock : MonoBehaviour
 {
-    [SerializeField] AudioClip successSFX;
+    [System.Serializable]
+    public struct MyClip{
+        public AudioClip audioClip;
+        public float volume;
+    }
+
+    [SerializeField] MyClip[] successSFXs;
     [SerializeField] AudioClip failureSFX;
     [SerializeField] AudioClip hintSFX;
 
@@ -29,7 +35,8 @@ public class Lock : MonoBehaviour
             if (m_keyLock.pairOrNot(collision.GetComponent<Key>(), gameObject.GetComponent<Lock>()))
             {
                 // success
-                AudioSource.PlayClipAtPoint(successSFX, Camera.main.transform.position, 0.25f);
+                AudioSource.PlayClipAtPoint(successSFXs[0].audioClip, Camera.main.transform.position, successSFXs[0].volume);
+                AudioSource.PlayClipAtPoint(successSFXs[1].audioClip, Camera.main.transform.position, successSFXs[1].volume);
                 successFlag.SetActive(true);
                 Destroy(collision.gameObject);
                 Destroy(gameObject);
