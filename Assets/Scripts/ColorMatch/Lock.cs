@@ -32,7 +32,7 @@ public class Lock : MonoBehaviour
     {
         if (collision.CompareTag("Key"))
         {
-            if (m_keyLock.pairOrNot(collision.GetComponent<Key>(), gameObject.GetComponent<Lock>()))
+            if (m_keyLock.pairOrNot(collision.GetComponent<Key>(), this))
             {
                 // success
                 AudioSource.PlayClipAtPoint(successSFXs[0].audioClip, Camera.main.transform.position, successSFXs[0].volume);
@@ -50,6 +50,17 @@ public class Lock : MonoBehaviour
                 Invoke("ResetIsShining", 4.5f);
             }
         }
+        else
+        {
+            AudioSource.PlayClipAtPoint(failureSFX, Camera.main.transform.position, 0.25f);
+            collision.gameObject.transform.position = collision.gameObject.GetComponent<Diamond>().GetOriginalPos();
+            if (m_pairedKey)
+            {
+                m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", true);
+                Invoke("ResetIsShining", 4.5f);
+            }
+        }
+            
     }
 
     private void ResetIsShining()
