@@ -31,7 +31,9 @@ public class Flag : MonoBehaviour
         m_pairedDimd.gameObject.SetActive(true);
     }
 
-
+    // This is terrible collision logic
+    // NEVER DO THIS AGAIN
+    // USER LAYER-BASED COLLISON SYSTEM
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Diamond"))
@@ -49,9 +51,16 @@ public class Flag : MonoBehaviour
                 // wrong
                 AudioSource.PlayClipAtPoint(failureSFX, Camera.main.transform.position, 0.25f);
                 collision.gameObject.transform.position = collision.gameObject.GetComponent<Diamond>().GetOriginalPos();
-                m_pairedDimd.gameObject.GetComponent<Animator>().SetBool("isShining", true);
-                Invoke("ResetIsShining", 4.5f);
+                if (m_pairedDimd)
+                { 
+                    m_pairedDimd.gameObject.GetComponent<Animator>().SetBool("isShining", true);
+                    Invoke("ResetIsShining", 4.5f);
+                }
             }
+        }
+        else if (collision.CompareTag("Bubble"))
+        {
+
         }
         else
         {
@@ -67,7 +76,10 @@ public class Flag : MonoBehaviour
 
     private void ResetIsShining()
     {
-        m_pairedDimd.gameObject.GetComponent<Animator>().SetBool("isShining", false);
+        if (m_pairedDimd)
+        {
+            m_pairedDimd.gameObject.GetComponent<Animator>().SetBool("isShining", false);
+        }
     }
 
     private void Update()
@@ -83,11 +95,13 @@ public class Flag : MonoBehaviour
 
                 if (touchedCollider == m_col)
                 {
-                    AudioSource.PlayClipAtPoint(hintSFX, Camera.main.transform.position, 0.1f);
+                    if (m_pairedDimd)
+                    {
+                        AudioSource.PlayClipAtPoint(hintSFX, Camera.main.transform.position, 0.1f);
 
-                    m_pairedDimd.gameObject.GetComponent<Animator>().SetBool("isShining", true);
-                    Invoke("ResetIsShining", 4.5f);
-
+                        m_pairedDimd.gameObject.GetComponent<Animator>().SetBool("isShining", true);
+                        Invoke("ResetIsShining", 4.5f);
+                    }
                 }
             }
         }

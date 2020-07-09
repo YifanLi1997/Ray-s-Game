@@ -27,7 +27,11 @@ public class Lock : MonoBehaviour
         m_pairedKey = m_keyLock.findPairedKey(this);
     }
    
-
+    // This is terrible collision logic
+    // NEVER DO THIS AGAIN
+    // USER LAYER-BASED COLLISON SYSTEM
+    // having some questions about whether OnTrigger events respect collison matrix,
+    // may figure out sometime in the future
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Key"))
@@ -46,9 +50,16 @@ public class Lock : MonoBehaviour
                 // wrong
                 AudioSource.PlayClipAtPoint(failureSFX, Camera.main.transform.position, 0.25f);
                 collision.gameObject.transform.position = collision.gameObject.GetComponent<Key>().GetOriginalPos();
-                m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", true);
-                Invoke("ResetIsShining", 4.5f);
+                if (m_pairedKey)
+                {
+                    m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", true);
+                    Invoke("ResetIsShining", 4.5f);
+                }
             }
+        }
+        else if (collision.CompareTag("Bubble"))
+        {
+
         }
         else
         {
@@ -65,7 +76,10 @@ public class Lock : MonoBehaviour
 
     private void ResetIsShining()
     {
-        m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", false);
+        if (m_pairedKey)
+        {
+            m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", false);
+        }
     }
 
     private void Update()
@@ -81,11 +95,13 @@ public class Lock : MonoBehaviour
 
                 if (touchedCollider == m_col)
                 {
-                    AudioSource.PlayClipAtPoint(hintSFX, Camera.main.transform.position, 0.1f);
+                    if (m_pairedKey)
+                    {
+                        AudioSource.PlayClipAtPoint(hintSFX, Camera.main.transform.position, 0.1f);
 
-                    m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", true);
-                    Invoke("ResetIsShining", 4.5f);
-
+                        m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", true);
+                        Invoke("ResetIsShining", 4.5f);
+                    }
                 }
             }
         }

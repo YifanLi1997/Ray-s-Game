@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 736636162710720188}
   m_Layer: 0
   m_Name: hud_p1Alt
-  m_TagString: Untagged
+  m_TagString: Bubble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c16ad623e894d168c0b37cec98284b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bubbleBreakSFX: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
 --- !u!95 &736636162710720188
 Animator:
   serializedVersion: 3

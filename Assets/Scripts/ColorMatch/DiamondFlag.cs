@@ -15,7 +15,7 @@ public class DiamondFlag : MonoBehaviour
     [SerializeField] AudioClip winClip;
 
     private int m_count = 4;
-    private GameEnvir m_gameEnvir;
+    private bool m_winOrNot = false;
     private AudioSource m_audioSource;
 
     // test config - backdoor
@@ -23,14 +23,15 @@ public class DiamondFlag : MonoBehaviour
 
     private void Start()
     {
-        m_count = diamonds.Count;
-        m_gameEnvir = FindObjectOfType<GameEnvir>();
-        m_audioSource = m_gameEnvir.gameObject.GetComponent<AudioSource>();
+        m_audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
-        CheckWinCondition();
+        if (!m_winOrNot)
+        {
+            CheckWinCondition();
+        }
     }
 
     public Diamond findPairedDiamond(Flag m_flag)
@@ -66,6 +67,7 @@ public class DiamondFlag : MonoBehaviour
     {
         if (m_count <= 0 || winOrNot) // winOrNot is a backdoor
         {
+            m_winOrNot = true;
             ShowWinEffect();
         }
     }
@@ -73,14 +75,24 @@ public class DiamondFlag : MonoBehaviour
     private void ShowWinEffect()
     {
         //SFX
-        m_audioSource.clip = winClip;
         if (!m_audioSource.isPlaying)
         {
-            m_audioSource.Play();
+            StartCoroutine(DelayTheSound());
         }
 
         // VFX
+        foreach (var flag in flags)
+        {
+            flag.gameObject.GetComponent<Animator>().SetBool("isDisappearing", true);
+        }
         bubbleSpawner.gameObject.SetActive(true);
         restartPanel.SetActive(true);
+    }
+
+    IEnumerator DelayTheSound()
+    {
+        // wait for the end of the previous audio
+        yield return new WaitForSeconds(1.5f);
+        m_audioSource.PlayOneShot(winClip, 1.5f);
     }
 }

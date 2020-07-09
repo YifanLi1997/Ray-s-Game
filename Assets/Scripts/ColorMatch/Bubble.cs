@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
+    [SerializeField] AudioClip bubbleBreakSFX;
+
     Collider2D m_col;
+    AudioSource m_audioSource;
 
     void Start()
     {
         m_col = GetComponent<Collider2D>();
+        m_audioSource = FindObjectOfType<Shredder>().GetComponent<AudioSource>();
     }
 
     void Update()
@@ -23,8 +27,7 @@ public class Bubble : MonoBehaviour
                 Collider2D m_touchedCollier = Physics2D.OverlapPoint(touchPos);
                 if (m_col == m_touchedCollier)
                 {
-                    // Explosion
-                    Debug.Log(m_touchedCollier);
+                    m_audioSource.PlayOneShot(bubbleBreakSFX);
                     gameObject.SetActive(false);
                 }
             }
