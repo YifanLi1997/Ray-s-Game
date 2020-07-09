@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Start.unity
     guid: 8bf804a77d15a43d49e7d078a2baa4c1
   - enabled: 1
-    path: Assets/Scenes/Game.unity
+    path: Assets/Scenes/ColorMatch.unity
     guid: 1f11233a356e742a2b50718e6371aaec
   m_configObjects: {}

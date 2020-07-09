@@ -14,7 +14,7 @@ public class Lock : MonoBehaviour
     [SerializeField] AudioClip failureSFX;
     [SerializeField] AudioClip hintSFX;
 
-    [SerializeField] GameObject successFlag;
+    [SerializeField] GameObject nextObject;
 
     KeyLock m_keyLock;
     Collider2D m_col;
@@ -37,12 +37,13 @@ public class Lock : MonoBehaviour
                 // success
                 AudioSource.PlayClipAtPoint(successSFXs[0].audioClip, Camera.main.transform.position, successSFXs[0].volume);
                 AudioSource.PlayClipAtPoint(successSFXs[1].audioClip, Camera.main.transform.position, successSFXs[1].volume);
-                successFlag.SetActive(true);
+                nextObject.SetActive(true);
                 Destroy(collision.gameObject);
                 Destroy(gameObject);
             }
             else
             {
+                // wrong
                 AudioSource.PlayClipAtPoint(failureSFX, Camera.main.transform.position, 0.25f);
                 collision.gameObject.transform.position = collision.gameObject.GetComponent<Key>().GetOriginalPos();
                 m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", true);
@@ -71,7 +72,8 @@ public class Lock : MonoBehaviour
                 {
                     AudioSource.PlayClipAtPoint(hintSFX, Camera.main.transform.position, 0.1f);
 
-                    // TODO: the related key hint VFX
+                    m_pairedKey.gameObject.GetComponent<Animator>().SetBool("isShining", true);
+                    Invoke("ResetIsShining", 4.5f);
 
                 }
             }
