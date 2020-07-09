@@ -86,13 +86,20 @@ public class DiamondFlag : MonoBehaviour
             flag.gameObject.GetComponent<Animator>().SetBool("isDisappearing", true);
         }
         bubbleSpawner.gameObject.SetActive(true);
-        restartPanel.SetActive(true);
+        StartCoroutine(DelayTheArrow());
     }
 
     IEnumerator DelayTheSound()
     {
         // wait for the end of the previous audio
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         m_audioSource.PlayOneShot(winClip, 1.5f);
+    }
+
+    IEnumerator DelayTheArrow()
+    {
+        // wait for the end of the previous audio
+        yield return new WaitForSeconds(1.5f);
+        restartPanel.SetActive(true);
     }
 }
